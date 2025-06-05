@@ -66,22 +66,33 @@ struct AppetizerDetailsView: View {
 
                         Divider()
 
-                        if !meal.strYoutube.isEmpty {
+//                        if !meal.strYoutube.isEmpty {
+//                            Text("Watch Tutorial")
+//                                .font(.headline)
+//
+//                            Link(destination: URL(string: meal.strYoutube)!) {
+//                                HStack {
+//                                    Image(systemName: "play.rectangle.fill")
+//                                        .font(.title2)
+//                                        .foregroundColor(.red)
+//                                    Text("Watch on YouTube")
+//                                }
+//                                .padding(8)
+//                                .background(Color(.systemGray6))
+//                                .cornerRadius(8)
+//                            }
+//                        }
+                        
+                        if let videoID = extractYouTubeID(from: meal.strYoutube) {
                             Text("Watch Tutorial")
                                 .font(.headline)
+                                .padding(.top)
 
-                            Link(destination: URL(string: meal.strYoutube)!) {
-                                HStack {
-                                    Image(systemName: "play.rectangle.fill")
-                                        .font(.title2)
-                                        .foregroundColor(.red)
-                                    Text("Watch on YouTube")
-                                }
-                                .padding(8)
-                                .background(Color(.systemGray6))
-                                .cornerRadius(8)
-                            }
+                            YouTubeWebView(videoID: videoID)
+                                .frame(height: 200)
+                                .cornerRadius(12)
                         }
+
                     }
                     .padding()
                 }
@@ -103,6 +114,17 @@ struct AppetizerDetailsView: View {
             showAlert = newValue != nil
         }
     }
+    
+    func extractYouTubeID(from urlString: String) -> String? {
+        guard let url = URLComponents(string: urlString),
+              url.host?.contains("youtube.com") == true,
+              let queryItems = url.queryItems,
+              let idItem = queryItems.first(where: { $0.name == "v" }) else {
+            return nil
+        }
+        return idItem.value
+    }
+
 }
 
 #Preview {
