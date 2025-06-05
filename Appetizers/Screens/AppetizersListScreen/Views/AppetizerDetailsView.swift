@@ -93,23 +93,7 @@ struct AppetizerDetailsView: View {
                             .font(.body)
                         
                         Divider()
-                        
-                        //                        if !meal.strYoutube.isEmpty {
-                        //                            Text("Watch Tutorial")
-                        //                                .font(.headline)
-                        //
-                        //                            Link(destination: URL(string: meal.strYoutube)!) {
-                        //                                HStack {
-                        //                                    Image(systemName: "play.rectangle.fill")
-                        //                                        .font(.title2)
-                        //                                        .foregroundColor(.red)
-                        //                                    Text("Watch on YouTube")
-                        //                                }
-                        //                                .padding(8)
-                        //                                .background(Color(.systemGray6))
-                        //                                .cornerRadius(8)
-                        //                            }
-                        //                        }
+
                         
                         if let videoID = extractYouTubeID(from: meal.strYoutube) {
                             Text("Watch Tutorial")
@@ -124,14 +108,15 @@ struct AppetizerDetailsView: View {
                     }
                     .padding()
                 }
+                .navigationTitle(meal.strMeal)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar(.hidden, for: .tabBar) 
             } else {
                 Text("No meal details found.")
             }
             
             
         }
-        .navigationTitle(viewModel.mealDetails?.strMeal ?? "Meal Detail")
-        .navigationBarTitleDisplayMode(.inline)
         .task {
             viewModel.fetchMealDetails(mealId: mealId)
         }
@@ -144,21 +129,6 @@ struct AppetizerDetailsView: View {
             showAlert = newValue != nil
         }
         
-//        // 🛒 Floating Add to Cart Button
-//        if let meal = viewModel.mealDetails {
-//            Button(action: {
-//                cartManager.add(meal)
-//            }) {
-//                Image(systemName: "cart.badge.plus")
-//                    .font(.title)
-//                    .padding()
-//                    .background(Color.accentColor)
-//                    .foregroundColor(.white)
-//                    .clipShape(Circle())
-//                    .shadow(radius: 4)
-//            }
-//            .padding()
-//        }
     }
     
     func extractYouTubeID(from urlString: String) -> String? {
@@ -173,8 +143,4 @@ struct AppetizerDetailsView: View {
     
 }
 
-#Preview {
-    NavigationStack {
-        AppetizerDetailsView(mealId: "52772")
-    }
-}
+

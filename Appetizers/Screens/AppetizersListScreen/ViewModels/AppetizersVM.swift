@@ -13,9 +13,9 @@ final class AppetizersVM: ObservableObject {
     @Published var alertItem: AlertItem?
     @Published var isLoading: Bool = false
     
-    func fetchMeals() {
+    func fetchMeals(forCategory: String) {
         self.isLoading = true
-        ApiManager.shared.getMeals(forArea: "Canadian") { [weak self] response in
+        ApiManager.shared.getMeals(forCategory: forCategory) { [weak self] response in
     
             guard let self = self else { return }
     
@@ -46,4 +46,6 @@ final class AppetizersVM: ObservableObject {
             
         }
     }
+    
+    
 }
