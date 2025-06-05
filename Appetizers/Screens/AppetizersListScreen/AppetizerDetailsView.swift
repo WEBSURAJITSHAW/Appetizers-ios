@@ -10,8 +10,9 @@ import SwiftUI
 struct AppetizerDetailsView: View {
     let mealId: String
     @StateObject private var viewModel = AppetizerDetailVM()
+    @EnvironmentObject var cartManager: CartManager
     @State private var showAlert = false
-
+    
     var body: some View {
         Group {
             if viewModel.isLoading {
@@ -20,7 +21,7 @@ struct AppetizerDetailsView: View {
             } else if let meal = viewModel.mealDetails {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
-
+                        
                         AsyncImage(url: URL(string: meal.strMealThumb)) { image in
                             image
                                 .resizable()
@@ -30,17 +31,17 @@ struct AppetizerDetailsView: View {
                                 Color.gray.opacity(0.1)
                                 ProgressView()
                             }
-                                
+                            
                         }
                         .frame(height: 250)
                         .clipped()
                         .cornerRadius(12)
-
+                        
                         VStack(alignment: .leading, spacing: 8) {
                             Text(meal.strMeal)
                                 .font(.title)
                                 .fontWeight(.bold)
-
+                            
                             HStack {
                                 Text("Category: \(meal.strCategory)")
                                 Spacer()
@@ -48,57 +49,59 @@ struct AppetizerDetailsView: View {
                             }
                             .font(.subheadline)
                             .foregroundColor(.secondary)
-
+                            
                             if !meal.strTags.isEmpty {
                                 Text("Tags: \(meal.strTags)")
                                     .font(.footnote)
                                     .foregroundColor(.blue)
                             }
                         }
-
+                        
                         Divider()
-
+                        
                         Text("Instructions")
                             .font(.headline)
-
+                        
                         Text(meal.strInstructions)
                             .font(.body)
-
+                        
                         Divider()
-
-//                        if !meal.strYoutube.isEmpty {
-//                            Text("Watch Tutorial")
-//                                .font(.headline)
-//
-//                            Link(destination: URL(string: meal.strYoutube)!) {
-//                                HStack {
-//                                    Image(systemName: "play.rectangle.fill")
-//                                        .font(.title2)
-//                                        .foregroundColor(.red)
-//                                    Text("Watch on YouTube")
-//                                }
-//                                .padding(8)
-//                                .background(Color(.systemGray6))
-//                                .cornerRadius(8)
-//                            }
-//                        }
+                        
+                        //                        if !meal.strYoutube.isEmpty {
+                        //                            Text("Watch Tutorial")
+                        //                                .font(.headline)
+                        //
+                        //                            Link(destination: URL(string: meal.strYoutube)!) {
+                        //                                HStack {
+                        //                                    Image(systemName: "play.rectangle.fill")
+                        //                                        .font(.title2)
+                        //                                        .foregroundColor(.red)
+                        //                                    Text("Watch on YouTube")
+                        //                                }
+                        //                                .padding(8)
+                        //                                .background(Color(.systemGray6))
+                        //                                .cornerRadius(8)
+                        //                            }
+                        //                        }
                         
                         if let videoID = extractYouTubeID(from: meal.strYoutube) {
                             Text("Watch Tutorial")
                                 .font(.headline)
                                 .padding(.top)
-
+                            
                             YouTubeWebView(videoID: videoID)
                                 .frame(height: 200)
                                 .cornerRadius(12)
                         }
-
+                        
                     }
                     .padding()
                 }
             } else {
                 Text("No meal details found.")
             }
+            
+            
         }
         .navigationTitle(viewModel.mealDetails?.strMeal ?? "Meal Detail")
         .navigationBarTitleDisplayMode(.inline)
@@ -113,6 +116,22 @@ struct AppetizerDetailsView: View {
         .onChange(of: viewModel.errorMessage) { newValue in
             showAlert = newValue != nil
         }
+        
+        // 🛒 Floating Add to Cart Button
+        if let meal = viewModel.mealDetails {
+            Button(action: {
+                cartManager.add(meal)
+            }) {
+                Image(systemName: "cart.badge.plus")
+                    .font(.title)
+                    .padding()
+                    .background(Color.accentColor)
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+                    .shadow(radius: 4)
+            }
+            .padding()
+        }
     }
     
     func extractYouTubeID(from urlString: String) -> String? {
@@ -124,7 +143,7 @@ struct AppetizerDetailsView: View {
         }
         return idItem.value
     }
-
+    
 }
 
 #Preview {

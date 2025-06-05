@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct AppetizersApp: App {
+    
+    @StateObject var cartManager = CartManager()
+    
     var body: some Scene {
         WindowGroup {
             AppetizersTabView()
+                .environmentObject(cartManager)
         }
     }
 }

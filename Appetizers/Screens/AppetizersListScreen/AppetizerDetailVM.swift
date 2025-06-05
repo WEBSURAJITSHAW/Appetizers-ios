@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class AppetizerDetailVM: ObservableObject {
     @Published var mealDetails: MealDetails?
     @Published var isLoading = false

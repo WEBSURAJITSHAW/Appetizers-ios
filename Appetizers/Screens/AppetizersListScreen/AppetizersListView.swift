@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AppetizersListView: View {
     @StateObject private var viewModel = AppetizersVM()
+    @EnvironmentObject var cartManager: CartManager
     @State private var hasAppeared = false
     
     var body: some View {
