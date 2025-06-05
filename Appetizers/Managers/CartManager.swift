@@ -33,11 +33,13 @@ class CartManager: ObservableObject {
         }
     }
 
-    func add(_ item: MealDetails) {
-        if !items.contains(where: { $0.idMeal == item.idMeal }) {
-            items.append(item)
-        }
-    }
+    func add(_ meal: MealDetails) -> Bool {
+         if items.contains(where: { $0.idMeal == meal.idMeal }) {
+             return false // already exists
+         }
+         items.append(meal)
+         return true // newly added
+     }
 
     func remove(_ item: MealDetails) {
         items.removeAll { $0.idMeal == item.idMeal }

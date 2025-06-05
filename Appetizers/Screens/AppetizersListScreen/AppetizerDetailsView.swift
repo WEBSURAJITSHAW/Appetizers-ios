@@ -14,6 +14,10 @@ struct AppetizerDetailsView: View {
     @EnvironmentObject var cartManager: CartManager
     @State private var showAlert = false
     
+    @State private var alertMessage: String? = nil
+    @State private var showingCartAlert = false
+
+    
     var body: some View {
         Group {
             if viewModel.isLoading {
@@ -39,9 +43,9 @@ struct AppetizerDetailsView: View {
                             .cornerRadius(12)
 
                             Button(action: {
-                                cartManager.add(meal)
-                                showAlert = true
-
+                                let wasAdded = cartManager.add(meal)
+                                alertMessage = wasAdded ? "Added to Cart!" : "Already in Cart!"
+                                showingCartAlert = true
                             }) {
                                 Image(systemName: "cart.badge.plus")
                                     .font(.title2)
@@ -53,9 +57,10 @@ struct AppetizerDetailsView: View {
                             }
                             .padding(8)
                             .offset(x: -12, y: 30)
-                            .alert("Added to Cart!", isPresented: $showAlert) {
+                            .alert(alertMessage ?? "", isPresented: $showingCartAlert) {
                                 Button("OK", role: .cancel) {}
                             }
+
                         }
 
                         
