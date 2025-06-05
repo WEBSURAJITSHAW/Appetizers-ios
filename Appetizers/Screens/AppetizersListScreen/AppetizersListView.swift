@@ -19,25 +19,29 @@ struct AppetizersListView: View {
                 } else {
                     List {
                         ForEach(viewModel.fetchedMeals) { meal in
-                            HStack {
-                                APImage(imageURL: meal.strMealThumb)
-                                    .padding(.trailing, 8)
-                                
-                                VStack(alignment: .leading) {
-                                    Text(meal.strMeal)
-                                        .font(.headline)
-                                    Text(meal.idMeal)  
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
+                            
+                            NavigationLink(destination: AppetizerDetailsView(mealId: meal.idMeal)) {
+                                HStack {
+                                    APImage(imageURL: meal.strMealThumb)
+                                        .padding(.trailing, 8)
+                                    
+                                    VStack(alignment: .leading) {
+                                        Text(meal.strMeal)
+                                            .font(.headline)
+                                        Text(meal.idMeal)
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
                                 }
+                                .padding(.vertical, 4)
                             }
-                            .padding(.vertical, 4)
                         }
+                        
                     }
                     .listStyle(.plain)
                 }
             }
-            .navigationTitle("Appetizers")
+            .navigationTitle("🍔 Appetizers")
             .alert(item: $viewModel.alertItem) { alertItem in
                 Alert(
                     title: alertItem.title,

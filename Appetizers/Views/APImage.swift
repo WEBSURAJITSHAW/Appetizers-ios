@@ -8,31 +8,29 @@
 import SwiftUI
 
 struct APImage: View {
-    
     let imageURL: String
-    
+    let dimen: CGFloat?
+
+    init(imageURL: String, dimen: CGFloat? = 75) {
+        self.imageURL = imageURL
+        self.dimen = dimen
+    }
+
     var body: some View {
         AsyncImage(url: URL(string: imageURL)) { phase in
             switch phase {
-            case .empty:
-                // Placeholder while loading
+            case .empty, .failure:
                 Color.gray
-                    .frame(width: 75, height: 75)
+                    .frame(width: dimen, height: dimen)
                     .cornerRadius(5)
-                
+
             case .success(let image):
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 75, height: 75)
+                    .frame(width: dimen, height: dimen)
                     .cornerRadius(5)
-                
-            case .failure:
-                // Show a default “failed” placeholder
-                Color.gray
-                    .frame(width: 75, height: 75)
-                    .cornerRadius(5)
-                
+
             @unknown default:
                 EmptyView()
             }

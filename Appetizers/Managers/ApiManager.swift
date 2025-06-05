@@ -54,4 +54,24 @@ final class ApiManager {
         
     }
     
+    func getMealDetails(forMealId id: String) async throws -> MealDetailsResponse {
+        let urlString = baseStringURL + "lookup.php?i=\(id)"
+        guard let url = URL(string: urlString) else {
+            throw NetworkError.invalidURL
+        }
+        
+        let (data, resposne) = try await URLSession.shared.data(from: url)
+        
+        if let response = resposne as? HTTPURLResponse, response.statusCode != 200 {
+            throw NetworkError.unknown
+        }
+        
+        do {
+            let mealDetailsResponse = try JSONDecoder().decode(MealDetailsResponse.self, from: data)
+            return mealDetailsResponse
+        } catch {
+            throw NetworkError.decodingFailed
+        }
+    }
+    
 }
