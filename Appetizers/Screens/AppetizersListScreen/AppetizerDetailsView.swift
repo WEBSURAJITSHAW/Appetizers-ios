@@ -10,6 +10,7 @@ import SwiftUI
 struct AppetizerDetailsView: View {
     let mealId: String
     @StateObject private var viewModel = AppetizerDetailVM()
+    
     @EnvironmentObject var cartManager: CartManager
     @State private var showAlert = false
     
@@ -22,20 +23,41 @@ struct AppetizerDetailsView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
                         
-                        AsyncImage(url: URL(string: meal.strMealThumb)) { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        } placeholder: {
-                            ZStack {
-                                Color.gray.opacity(0.1)
-                                ProgressView()
+                        ZStack(alignment: .bottomTrailing) {
+                            AsyncImage(url: URL(string: meal.strMealThumb)) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            } placeholder: {
+                                ZStack {
+                                    Color.gray.opacity(0.1)
+                                    ProgressView()
+                                }
                             }
-                            
+                            .frame(height: 250)
+                            .clipped()
+                            .cornerRadius(12)
+
+                            Button(action: {
+                                cartManager.add(meal)
+                                showAlert = true
+
+                            }) {
+                                Image(systemName: "cart.badge.plus")
+                                    .font(.title2)
+                                    .padding(12)
+                                    .background(Color.accentColor)
+                                    .foregroundColor(.white)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 4)
+                            }
+                            .padding(8)
+                            .offset(x: -12, y: 30)
+                            .alert("Added to Cart!", isPresented: $showAlert) {
+                                Button("OK", role: .cancel) {}
+                            }
                         }
-                        .frame(height: 250)
-                        .clipped()
-                        .cornerRadius(12)
+
                         
                         VStack(alignment: .leading, spacing: 8) {
                             Text(meal.strMeal)
@@ -117,21 +139,21 @@ struct AppetizerDetailsView: View {
             showAlert = newValue != nil
         }
         
-        // 🛒 Floating Add to Cart Button
-        if let meal = viewModel.mealDetails {
-            Button(action: {
-                cartManager.add(meal)
-            }) {
-                Image(systemName: "cart.badge.plus")
-                    .font(.title)
-                    .padding()
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-                    .shadow(radius: 4)
-            }
-            .padding()
-        }
+//        // 🛒 Floating Add to Cart Button
+//        if let meal = viewModel.mealDetails {
+//            Button(action: {
+//                cartManager.add(meal)
+//            }) {
+//                Image(systemName: "cart.badge.plus")
+//                    .font(.title)
+//                    .padding()
+//                    .background(Color.accentColor)
+//                    .foregroundColor(.white)
+//                    .clipShape(Circle())
+//                    .shadow(radius: 4)
+//            }
+//            .padding()
+//        }
     }
     
     func extractYouTubeID(from urlString: String) -> String? {
