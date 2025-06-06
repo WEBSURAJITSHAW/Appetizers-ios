@@ -11,6 +11,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F2146A642DF31B7300155790 /* Screenshots */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Screenshots;
+			sourceTree = "<group>";
+		};
 		F297AA712DF01B4A00E5AF3B /* Appetizers */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Appetizers;
@@ -32,6 +37,7 @@
 		F297AA662DF01B4A00E5AF3B = {
 			isa = PBXGroup;
 			children = (
+				F2146A642DF31B7300155790 /* Screenshots */,
 				F297AA712DF01B4A00E5AF3B /* Appetizers */,
 				F297AA702DF01B4A00E5AF3B /* Products */,
 			);
@@ -61,6 +67,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F2146A642DF31B7300155790 /* Screenshots */,
 				F297AA712DF01B4A00E5AF3B /* Appetizers */,
 			);
 			name = Appetizers;
