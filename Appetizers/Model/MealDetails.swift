@@ -14,7 +14,7 @@ struct MealDetails: Codable, Identifiable {
     let strArea: String
     let strInstructions: String
     let strMealThumb: String
-    let strTags: String
+    let strTags: String?
     let strYoutube: String
     
     

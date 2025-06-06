@@ -77,11 +77,12 @@ struct AppetizerDetailsView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             
-                            if !meal.strTags.isEmpty {
-                                Text("Tags: \(meal.strTags)")
+                            if let tags = meal.strTags, !tags.isEmpty {
+                                Text("Tags: \(tags)")
                                     .font(.footnote)
                                     .foregroundColor(.blue)
                             }
+
                         }
                         
                         Divider()

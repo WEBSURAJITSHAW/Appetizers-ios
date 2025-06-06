@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct HomeScreenView: View {
+    
     @StateObject private var viewModel = HomeScreenVM()
+    @State private var isShowingSearch = false
+    
     var isLoading: Bool {
         viewModel.randomMealDetails == nil || viewModel.fetchedCategories.isEmpty || viewModel.fetchedTrendingMeals.isEmpty
     }
@@ -30,8 +33,16 @@ struct HomeScreenView: View {
                                 .bold()
                                 .foregroundColor(.accent)
                             Spacer()
-                            Image(systemName: "magnifyingglass")
-                                .font(.title2)
+                            
+                            Button{
+                              isShowingSearch = true
+                            } label: {
+                                Image(systemName: "magnifyingglass")
+                                    .font(.title2)
+                            }
+                            .fullScreenCover(isPresented: $isShowingSearch) {
+                                SearchView()
+                            }
                         }
                         .padding(.horizontal)
                         
@@ -105,18 +116,24 @@ struct HomeScreenView: View {
                                 NavigationLink(destination: AppetizersListView(categoryName: category.strCategory)) {
                                     VStack {
                                         AsyncImage(url: URL(string: category.strCategoryThumb)) { image in
-                                            image.resizable().aspectRatio(contentMode: .fill)
+                                            image.resizable()
+                                                .aspectRatio(contentMode: .fit)
                                         } placeholder: {
                                             Color.gray
                                         }
                                         .frame(height: 100)
                                         .clipped()
-                                        .cornerRadius(10)
-                                        
+                                        .cornerRadius(8)
+
                                         Text(category.strCategory)
                                             .font(.subheadline)
                                             .bold()
+                                            .foregroundColor(.primary)
                                     }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(12)
+                                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
                                 }
                             }
                         }
