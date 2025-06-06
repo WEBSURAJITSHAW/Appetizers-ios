@@ -54,6 +54,7 @@ struct OrdersView: View {
                 }
             }
             .navigationTitle("🛒 My Cart")
+            .accentColor(.accent)
         }
     }
 

@@ -113,31 +113,15 @@ struct HomeScreenView: View {
                         
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                             ForEach(viewModel.fetchedCategories) { category in
-                                NavigationLink(destination: AppetizersListView(categoryName: category.strCategory)) {
-                                    VStack {
-                                        AsyncImage(url: URL(string: category.strCategoryThumb)) { image in
-                                            image.resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                        } placeholder: {
-                                            Color.gray
-                                        }
-                                        .frame(height: 100)
-                                        .clipped()
-                                        .cornerRadius(8)
-
-                                        Text(category.strCategory)
-                                            .font(.subheadline)
-                                            .bold()
-                                            .foregroundColor(.primary)
-                                    }
-                                    .padding()
-                                    .background(Color(.systemGray6))
-                                    .cornerRadius(12)
-                                    .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-                                }
+                                CategoryNavigationLink(
+                                    imageUrl: category.strCategoryThumb,
+                                    title: category.strCategory,
+                                    destination: AppetizersListView(categoryName: category.strCategory)
+                                )
                             }
                         }
-                        .padding(.horizontal)
+//                        .padding(.horizontal)
+
                     }
                     .padding(.top)
                 }
